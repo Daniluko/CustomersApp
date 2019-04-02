@@ -10,6 +10,7 @@ import springboot.service.CustomerService;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by Danylo on 31.03.2019
@@ -22,12 +23,21 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    @GetMapping
+    public @ResponseBody
+    Set<Customer> getAllCustomers (){
+        LOG.info("get all customers");
+        Set <Customer> result = customerService.getAllCustomers();
+        LOG.info("successfully");
+        return result;
+    }
+
     @GetMapping("/{id}")
     public @ResponseBody
     Customer getCustomerById (@PathVariable("id") BigDecimal id){
-        LOG.info("getCustomerById started, id={}", id);
+        LOG.info("get customer by id , id={}", id);
         Customer result = customerService.findCustomerById(id);
-        LOG.info("getCustomerById done");
+        LOG.info("successfully");
         return result;
     }
 
@@ -39,20 +49,20 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public void updateCustomerById(@PathVariable("id") BigDecimal id, @RequestParam("cust_num") BigDecimal cust_num){
-        LOG.info("Update customer, id={}, cust_num={}", id, cust_num);
+    public void updateCustomer(@PathVariable("id") BigDecimal id, @RequestParam("credit_limit") BigDecimal credit_limit){
+        LOG.info("Update customer");
         Customer customer = customerService.findCustomerById(id);
         if(Objects.isNull(customer)){
-            LOG.warn("not existing customer");
+            LOG.warn("not found customer with your id");
         } else {
-            customer.setCustNum(cust_num);
+            customer.setCreditLimit(credit_limit);
             customerService.updateCustomer(customer);
         }
         LOG.info("successfully");
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCustomerById(@PathVariable("id") BigDecimal id){
+    public void deleteCustomer(@PathVariable("id") BigDecimal id){
         LOG.info("Delete customer By Id, id={}", id);
         customerService.deleteCustomer(id);
         LOG.info("successfully");

@@ -1,5 +1,7 @@
 package springboot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -13,6 +15,7 @@ public class Customer implements java.io.Serializable {
     private BigDecimal custNum;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CUST_REP")
+    @JsonIgnore
     private Salesrep custRep;
     @Column(name = "CREDIT_LIMIT")
     private BigDecimal creditLimit;
